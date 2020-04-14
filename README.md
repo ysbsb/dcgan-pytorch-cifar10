@@ -44,9 +44,23 @@
 
 
 <h2>Train</h2>
-```shell
+
+
+
+
+
+
+```
 python main.py --dataroot [DATAROOT] --dataset [CIFAR] --model [DCGAN]
 ```
+
+
+
+
+
+
+
+
 
 <br>
 
