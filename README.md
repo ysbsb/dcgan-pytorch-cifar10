@@ -50,12 +50,6 @@ python fid_score.py [path/of/images/real] [path/of/images/fake] --model [DCGAN]
 
 ![dcgan-cifar](https://user-images.githubusercontent.com/37301677/79194799-2921c900-7e68-11ea-8ced-49452a09b616.gif)
 
-```text
-<p align="center"><img src="https://user-images.githubusercontent.com/37301677/79194799-2921c900-7e68-11ea-8ced-49452a09b616.gif"></p>
-```
-
-
-
 
 
 - logs
