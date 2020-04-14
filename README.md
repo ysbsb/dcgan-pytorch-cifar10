@@ -2,10 +2,7 @@
 
 ![dcgan1](https://user-images.githubusercontent.com/37301677/79193816-58cfd180-7e66-11ea-8573-f8ffecd03627.png)
 
-<br>
-
 <h2>Configures</h2>
-
 ```
   model: dcgan
   is_train: True
@@ -30,26 +27,43 @@
   gpuids: [0]
 ```
 
-
-
-<br>
-
 <h2>Train</h2>
-
 ```shell
 python main.py --dataroot [DATAROOT] --dataset [CIFAR] --model [DCGAN]
 ```
 
 
 
-<br>
+<h2>Evaluate</h2>
+
+```shell
+python fid_score.py [path/of/images/real] [path/of/images/fake] --model [DCGAN]
+```
+
+
+
+
+
+<h2>Results</h2>
+
+- generated images
+
+![dcgan-cifar](https://user-images.githubusercontent.com/37301677/79194799-2921c900-7e68-11ea-8ced-49452a09b616.gif)
+
+
+
+
+
+- logs
+
+![dcgan_losses](https://user-images.githubusercontent.com/37301677/79195372-1f4c9580-7e69-11ea-8b8a-4cbe83029f32.png)
+
+
 
 <h2>References</h2>
-
 - [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks](https://arxiv.org/abs/1511.06434)
 - https://github.com/pytorch/examples/tree/master/dcgan
 - https://github.com/Zeleni9/pytorch-wgan
 - https://github.com/sbarratt/inception-score-pytorch
 - https://github.com/mseitzer/pytorch-fid
 
-<br>
