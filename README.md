@@ -4,6 +4,15 @@
 
 # DCGAN pytorch CIFAR10
 
+Implement of DCGAN pytorch using CIFAR10  
+[Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks, ICLR 2016](https://arxiv.org/abs/1511.06434)
+<br>
+
+TO DO
+* Add CelebA dataloader
+* Refactor code for readbilty and reusability
+
+
 ![dcgan1](https://user-images.githubusercontent.com/37301677/79193816-58cfd180-7e66-11ea-8573-f8ffecd03627.png)
 
 <br>
