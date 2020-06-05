@@ -10,7 +10,7 @@ Implement of DCGAN pytorch using CIFAR10
 
 TO DO
 * Add CelebA dataloader
-* Refactor code for readbilty and reusability
+* Refactor code for readabilty and reusability
 
 
 ![dcgan1](https://user-images.githubusercontent.com/37301677/79193816-58cfd180-7e66-11ea-8573-f8ffecd03627.png)
