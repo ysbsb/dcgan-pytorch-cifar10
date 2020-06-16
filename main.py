@@ -1,6 +1,6 @@
-from config import parse_args
-from data_loader import get_data_loader
-from dcgan import DCGAN
+from utils.config import parse_args
+from utils.data_loader import get_data_loader
+from model.dcgan import DCGAN
 
 
 def main(args):
