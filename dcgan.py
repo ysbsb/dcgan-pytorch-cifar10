@@ -9,7 +9,7 @@ from itertools import chain
 import pandas as pd
 import time as t
 import os
-from utils.inception_score import get_inception_score
+from inception_score import get_inception_score
 
 
 class Generator(nn.Module):
