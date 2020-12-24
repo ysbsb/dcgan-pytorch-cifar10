@@ -5,11 +5,104 @@ import torch.optim as optim
 import torch.utils.data
 import torchvision.utils as vutils
 from torch.autograd import Variable
-from itertools import chain
+import torchvision.datasets as dset
+import torchvision.transforms as transforms
+import torch.utils.data as data_utils
 import pandas as pd
 import time as t
 import os
-from inception_score import get_inception_score
+import argparse
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Pytorch implementation of GAN models."
+    )
+
+    parser.add_argument("--model", type=str, default="dcgan", choices=["dcgan"])
+    parser.add_argument("--is_train", type=str, default="True")
+    parser.add_argument(
+        "--dataroot", type=str, default="dataset/cifar", help="path to dataset"
+    )
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="cifar",
+        choices=["cifar"],
+        help="The name of dataset",
+    )
+    parser.add_argument("--download", type=str, default="True")
+    parser.add_argument(
+        "--epochs", type=int, default=25, help="The number of epochs to run"
+    )
+    parser.add_argument("--batch_size", type=int, default=128, help="The size of batch")
+    parser.add_argument(
+        "--image_size", type=int, default=64, help="Spatial size of training images."
+    )
+    parser.add_argument(
+        "--nc", type=int, default=3, help="Number of channels in the training images"
+    )
+    parser.add_argument("--nz", type=int, default=100, help="Size of z latent vector")
+    parser.add_argument(
+        "--ngf", type=int, default=64, help="Size of feature maps in generator"
+    )
+    parser.add_argument(
+        "--ndf", type=int, default=64, help="Size of feature maps in discriminator"
+    )
+    parser.add_argument(
+        "--learning_rate",
+        type=float,
+        default=0.0002,
+        help="Learning rate for optimizers",
+    )
+    parser.add_argument(
+        "--beta1", type=float, default=0.5, help="Beta1 hyperparam for Adam optimizers"
+    )
+    parser.add_argument("--ngpu", type=int, default=1, help="Number of GPUs available.")
+    parser.add_argument("--cuda", type=str, default="True", help="Availability of cuda")
+    parser.add_argument(
+        "--load_D",
+        type=str,
+        default="False",
+        help="Path for loading Discriminator network",
+    )
+    parser.add_argument(
+        "--load_G", type=str, default="False", help="Path for loading Generator network"
+    )
+    parser.add_argument("--workers", type=int, default=2, help="The number of workers.")
+    parser.add_argument(
+        "--generator_iters",
+        type=int,
+        default=10000,
+        help="The number of iterations for generator in WGAN model.",
+    )
+    parser.add_argument("--gpuids", default=[0], help="GPU ids for using (Default: 0)")
+
+    cfg = parser.parse_args()
+    cfg.gpuids = list(map(int, cfg.gpuids))
+
+    return cfg
+
+
+
+def get_data_loader(args):
+
+    if args.dataset == 'cifar':
+        # We can use an image folder dataset the way we have it setup.
+        # Create the dataset
+        dataset = dset.CIFAR10(root=args.dataroot, download=args.download,
+                               transform=transforms.Compose([
+                                   transforms.Resize(args.image_size),
+                                   transforms.CenterCrop(args.image_size),
+                                   transforms.ToTensor(),
+                                   transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+                               ]))
+        # Create the dataloader
+        dataloader = data_utils.DataLoader(dataset, batch_size=args.batch_size,
+                                           shuffle=True, num_workers=args.workers)
+
+    return dataloader
+
 
 
 class Generator(nn.Module):
@@ -184,31 +277,7 @@ class DCGAN(nn.Module):
                     )
 
                 if (iters + 1) % 1000 == 0:
-                    """
-                    sample_list = []
-                    for i in range(10):
-                        z = self.fixed_noise
-                        samples = self.netG(z)
-                        sample_list.append(samples.data.cpu().numpy())
 
-                    new_sample_list = list(chain.from_iterable(sample_list))
-                    print("Calculating Inception Score over 8k generated images")
-                    inception_score = get_inception_score(
-                        new_sample_list,
-                        cuda=True,
-                        batch_size=32,
-                        resize=True,
-                        splits=10,
-                    )
-
-                    time = t.time() - self.t_begin
-                    print("Inception score: {}".format(inception_score))
-                    print("Generator iter: {}".format(iters))
-                    print("Time {}".format(time))
-
-                    output = str(iters) + ", " + str(inception_score[0]) + "\n"
-                    self.file.write(output)
-                    """
 
                     z = self.fixed_noise
                     samples = self.netG(z)
@@ -297,3 +366,26 @@ class DCGAN(nn.Module):
             )
 
         self.file.close()
+
+
+def main(args):
+    model = None
+    if args.model == 'dcgan':
+        model = DCGAN(args)
+    else:
+        print("Model type non-existing. Try again.")
+        exit(-1)
+
+    print('----------------- configuration -----------------')
+    for k, v in vars(args).items():
+        print('  {}: {}'.format(k, v))
+    print('-------------------------------------------------')
+
+    data_loader = get_data_loader(args)
+
+    model.train(data_loader)
+
+
+if __name__ == '__main__':
+    args = parse_args()
+    main(args)
