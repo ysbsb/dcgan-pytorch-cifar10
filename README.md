@@ -8,12 +8,21 @@ Implement of DCGAN pytorch using CIFAR10
 [Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks, ICLR 2016](https://arxiv.org/abs/1511.06434)
 <br>
 
-TO DO
-* Add CelebA dataloader
-* Refactor code for readabilty and reusability
+
 
 
 ![dcgan1](https://user-images.githubusercontent.com/37301677/79193816-58cfd180-7e66-11ea-8573-f8ffecd03627.png)
+
+
+
+<h2>Train</h2>
+
+
+```
+python dcgan.py --dataroot [DATAROOT] --dataset [CIFAR] --model [DCGAN]
+```
+
+
 
 <h2>Configures</h2>
 
@@ -44,21 +53,7 @@ TO DO
 ```
 
 
-<h2>Train</h2>
 
-
-```
-python main.py --dataroot [DATAROOT] --dataset [CIFAR] --model [DCGAN]
-```
-
-
-
-<h2>Evaluate</h2>
-
-
-```
-python fid_score.py [path/of/images/real] [path/of/images/fake] --model [DCGAN]
-```
 
 
 <h2>Results</h2>
